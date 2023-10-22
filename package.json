@@ -1,0 +1,16 @@
+{
+  "name": "massacre-socket",
+  "version": "0.0.1",
+  "description": "Socket IO Server for Massacre Game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+
+  },
+  "author": "Michael Black",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "socket.io": "^4.7.2"
+  }
+}
