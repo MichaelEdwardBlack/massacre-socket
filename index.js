@@ -52,6 +52,7 @@ setInterval(() => {
     backendProjectiles[id].y += backendProjectiles[id].velocity.y;
 
     const backendPlayerOfProjectile = backendPlayers[backendProjectiles[id].playerId];
+    // delete offscreen projectiles
     if (
       backendProjectiles[id].x - PROJECTILE_RADIUS >=
         backendPlayerOfProjectile.x + backendPlayerOfProjectile?.canvas?.width / 2 ||
@@ -66,6 +67,7 @@ setInterval(() => {
       continue;
     }
 
+    // handle players hit with projectiles
     for (const playerId in backendPlayers) {
       const backendPlayer = backendPlayers[playerId];
       const distance = Math.hypot(
@@ -92,9 +94,9 @@ const movePlayer = ({ id, dx = 0, dy = 0 }) => {
   for (let i = 0; i < boundaries.length; i++) {
     const boundary = boundaries[i];
     const futurePosition = {
-      position: { x: player.x + dx, y: player.y + dy },
-      height: 64,
-      width: 64,
+      position: { x: player.x + dx - 16, y: player.y + dy - 16 },
+      height: 32,
+      width: 32,
     };
     if (
       rectangularCollision({
@@ -129,6 +131,8 @@ io.on("connection", (socket) => {
     backendPlayers[socket.id].radius = PLAYER_RADIUS * pixelRatio;
     devicePixelRatios[socket.id] = pixelRatio;
     backendPlayers[socket.id].name = username ?? socket.id;
+
+    socket.emit("initBoundaries", boundaries);
   });
 
   socket.on("keydown", ({ key, sequenceNumber }) => {
